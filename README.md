@@ -70,7 +70,7 @@ $ npm install --save-dev hardhat
 $ pip install -r requirements.txt
 ```
 
-> > [!NOTE]
+> [!NOTE]
 > 
 > **Error while install brownie**: 
 > ``` bash
@@ -102,7 +102,7 @@ See more about [hardhat](https://github.com/NomicFoundation/hardhat),
 
 ### 1. Contract
 
-If you want to run the contract and test it manually, copy and paste the file from the contracts/ folder into the **REMIX IDE** 
+If you want to run the contract and test it manually, copy and paste the file from the `contracts/` folder into the **REMIX IDE** 
 * Remix IDE (Editor + Compilador + Deployer de Contratos) : https://remix.ethereum.org/
 
 ### 2. Tests
