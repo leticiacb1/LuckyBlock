@@ -1,0 +1,9 @@
+compiler:
+  vyper:
+    version: 0.4.1
+
+networks:
+  default: ganache
+  development:
+    cmd_settings:
+      port: 8545

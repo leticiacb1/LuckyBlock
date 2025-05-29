@@ -7,7 +7,7 @@ It is a decentralized lottery platform built on blockchain technology, designed 
 
 ### How the system would work ? 
 
-<img src="media/Diagram.png" width="400"/>
+<img src="media/Diagram.png" width="550"/>
 
 #### 1. Start of the Lottery
 
@@ -62,7 +62,7 @@ $ source venv/bin/activate
 
 ```bash
 # hardhat
-$ npm install --save-dev hardhat
+$ npm install -g ganache
 ```
 
 ```bash
@@ -85,14 +85,13 @@ $ pip install -r requirements.txt
 >  note: This error originates from a subprocess, and is likely not a problem with pip.
 >  ERROR: Failed building wheel for cchecksum
 > Failed to build cchecksum
-> ERROR: Could not build wheels for cchecksum, which is required to install pyproject.toml-based projects
+> ERROR: Could not build wheels for cchecksum, which is required to install pyproject.toml-based projects 
 > ```
-> 
 > **Fix**:
 > ```
-> $ sudo apt install python3.12-dev build-essential
+> $ sudo apt install python3.12-dev build-essential 
 > ```
-> >
+> 
 
 See more about [hardhat](https://github.com/NomicFoundation/hardhat), 
 [brownie](https://github.com/eth-brownie/brownie) and 
@@ -107,6 +106,43 @@ If you want to run the contract and test it manually, copy and paste the file fr
 
 ### 2. Tests
 
+1. Run ganache-cli (In terminal 1)
 ```bash
-brownie test
+$ cd src/
+$ ganache-cli -p 8545 -i 1337
+```
+
+2. Run tests (Terminal 2)
+
+```bash
+$ cd src/
+```
+
+```bash
+# Compile
+$ brownie compile --all
+```
+
+```bash
+# Add ganache network
+$ brownie networks add Ethereum ganache host=http://127.0.0.1:8545 chainid=1337
+
+SUCCESS: A new network 'ganache' has been added
+  └─ganache
+    ├─id: ganache
+    ├─chainid: 1337
+    └─host: http://127.0.0.1:8545
+
+# Test network
+$ brownie console --network ganache
+Brownie v1.21.0 - Python development framework for Ethereum
+
+No project was loaded.
+Brownie environment is ready.
+>>> Ctrl + D
+
+# Run tests
+$ brownie test
+
+# The default network is defined in the brownie-config.yaml file as ganache network
 ```

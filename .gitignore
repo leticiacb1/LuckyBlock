@@ -55,8 +55,8 @@ vyper/vyper_git_commithash.txt
 node_modules/
 
 # Brownie init
-lucky_block/__pycache__
-lucky_block/.history
-lucky_block/.hypothesis/
-lucky_block/build/
-lucky_block/reports/
+src/__pycache__
+src/.history
+src/.hypothesis/
+src/build/
+src/reports/
