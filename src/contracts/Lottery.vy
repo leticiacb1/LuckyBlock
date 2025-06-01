@@ -267,7 +267,6 @@ def draw_happened(winner_numbers: uint256[6]):
 def validate():
     self.validation_in_progress()
 
-    count: uint256 = self.user_ticket_counter[msg.sender]
     for i: uint256 in range(MAX_TICKETS_PER_USER):
         ticket: UserTicket = self.lottery_book[self.lottery.id][msg.sender][i]
         user_numbers: uint256[6] = ticket.user_chosen_numbers
