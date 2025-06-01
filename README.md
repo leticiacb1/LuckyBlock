@@ -7,7 +7,7 @@ It is a decentralized lottery platform built on blockchain technology, designed 
 
 ### How the system would work ? 
 
-<img src="media/Diagram.png" width="550"/>
+<img src="media/Diagram.png" width="700"/>
 
 #### 1. Start of the Lottery
 
@@ -84,7 +84,7 @@ $ python3 -m venv venv
 $ source venv/bin/activate
 ```
 
-3. Install dependencies (hardhat, brownie and vyper)
+3. Install dependencies (ganache, brownie and vyper)
 
 ```bash
 # hardhat
@@ -119,8 +119,7 @@ $ pip install -r requirements.txt
 > ```
 > 
 
-See more about [hardhat](https://github.com/NomicFoundation/hardhat), 
-[brownie](https://github.com/eth-brownie/brownie) and 
+See more about [ganache](https://archive.trufflesuite.com/docs/ganache/), [brownie](https://github.com/eth-brownie/brownie) and 
 [vyper](https://docs.vyperlang.org/en/stable/).
 
 ## 📌 How to run
