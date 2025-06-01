@@ -106,7 +106,7 @@ If you want to run the contract and test it manually, copy and paste the file fr
 
 ### 2. Tests
 
-1. Run ganache-cli (In terminal 1)
+1. Run ganache-cli (Terminal 1)
 ```bash
 $ cd src/
 $ ganache-cli -p 8545 -i 1337
@@ -119,8 +119,11 @@ $ cd src/
 ```
 
 ```bash
-# Compile
-$ brownie compile --all
+# Compile (src/ folder)
+$ brownie compile
+
+Brownie v1.21.0 - Python development framework for Ethereum
+Project has been compiled. Build artifacts saved at /home/leticiacb/Documents/Blockchain/LuckyBlock/src/build/contracts
 ```
 
 ```bash
@@ -141,7 +144,7 @@ No project was loaded.
 Brownie environment is ready.
 >>> Ctrl + D
 
-# Run tests
+# Run tests (src/ folder)
 $ brownie test
 
 # The default network is defined in the brownie-config.yaml file as ganache network

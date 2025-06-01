@@ -4,11 +4,13 @@
 # ------------ CONSTANTS ---------------
 # --------------------------------------
 
-MAX_TICKETS_PER_USER: constant(uint256) = 100
-MAX_NUMBER_OF_WINNERS: constant(uint256) = 1000
+MAX_TICKETS_PER_USER: constant(uint256) = 10
+MAX_NUMBER_OF_WINNERS: constant(uint256) = 100
 
 MIN_VALID_NUMBER: constant(uint256) = 1
 MAX_VALID_NUMBER: constant(uint256) = 60
+
+CHOOSEN_NUMBERS_SIZE: constant(uint256) = 6
 
 # --------------------------------------
 # ------------ STRUCT ------------------
@@ -24,7 +26,7 @@ valid_ticket_ids: public(HashMap[uint256, bool])
 # Maps users to their purchased tickets
 struct UserTicket:
     ticket_id: uint256
-    user_chosen_numbers: uint256[6]  # max of choosen numbers
+    user_chosen_numbers: uint256[CHOOSEN_NUMBERS_SIZE]  # max of choosen numbers
 
 # { user : ticket_counter }
 user_ticket_counter: public(HashMap[address, uint256])
@@ -44,8 +46,8 @@ struct Lottery:
     bet_ended: bool
 
     draw_occurred: bool
-    winner_combination: uint256[6]  # 6 winner numbers
-    winners_address: address[1000]  # Max of 1000 winners
+    winner_combination: uint256[CHOOSEN_NUMBERS_SIZE]  # 6 winner numbers
+    winners_address: address[MAX_NUMBER_OF_WINNERS]    # Max of 1000 winners
     n_winners: uint256
     prize_per_winner: uint256
 
@@ -59,7 +61,7 @@ struct Lottery:
     claim_ended: bool
     claim_started: bool
 
-lottery: Lottery
+lottery: public(Lottery)
 
 # { lottery_id : {
 #      user_address : { 
@@ -97,7 +99,7 @@ def __init__(
         bet_ended: False,
 
         draw_occurred: False,
-        winner_combination: empty(uint256[6]),
+        winner_combination: empty(uint256[CHOOSEN_NUMBERS_SIZE]),
         winners_address: empty(address[MAX_NUMBER_OF_WINNERS]),
         n_winners: 0,
         prize_per_winner: 0,
@@ -121,7 +123,7 @@ def __init__(
 @internal
 def set_ticket():
     ticket_id: uint256 = 1
-    amount_of_numbers: uint256 = 6
+    amount_of_numbers: uint256 = CHOOSEN_NUMBERS_SIZE
     price: uint256 = 5
 
     ticket: Ticket = Ticket({
@@ -190,17 +192,9 @@ def pay_ticket(id: uint256):
 
 @internal
 def validate_user_numbers(ticket_id: uint256, user_chosen_numbers: uint256[6]):
-    ticket: Ticket = self.tickets[ticket_id]
-    chosen_count: uint256 = 0
-    invalid_number: bool = False
-    for i: uint256 in range(10):
-        if user_chosen_numbers[i] != 0:
-            chosen_count += 1
-        if user_chosen_numbers[i] > MIN_VALID_NUMBER and user_chosen_numbers[i] < MAX_VALID_NUMBER:
+    for i: uint256 in range(CHOOSEN_NUMBERS_SIZE):
+        if user_chosen_numbers[i] < MIN_VALID_NUMBER or user_chosen_numbers[i] > MAX_VALID_NUMBER:
             assert False, "Invalid number chosen"
-
-    assert chosen_count == ticket.amount_of_numbers, "Invalid number of chosen numbers"
-
 
 @internal
 def register_ticket(user: address, ticket_id: uint256, user_chosen_numbers: uint256[6]):
@@ -226,7 +220,7 @@ def calculate_prize():
 
 @internal
 def same_numbers(user_numbers: uint256[6]) -> bool:
-    for i: uint256 in range(6):
+    for i: uint256 in range(CHOOSEN_NUMBERS_SIZE):
         if user_numbers[i] != self.lottery.winner_combination[i]:
             return False
     return True
@@ -251,14 +245,12 @@ def buy_ticket(ticket_id: uint256, user_chosen_numbers: uint256[6]):
     self.pay_ticket(ticket_id)
     self.register_ticket(msg.sender, ticket_id, user_chosen_numbers)
 
-
 @external
 def finish_bet_time():
     self.only_owner()
     self.bet_is_over()
     self.lottery.bet_ended = True
     self.calculate_prize()
-
 
 @external
 def draw_happened(winner_numbers: uint256[6]):
@@ -271,7 +263,6 @@ def draw_happened(winner_numbers: uint256[6]):
     self.lottery.validation_start_time = block.timestamp
     self.lottery.validation_started = True
 
-
 @external
 def finish_validation_time():
     self.only_owner()
@@ -282,14 +273,12 @@ def finish_validation_time():
     self.lottery.claim_start_time = block.timestamp
     self.lottery.claim_started = True
 
-
 @external
 def finish_claim_time():
     self.only_owner()
     assert self.lottery.validation_ended
     self.claim_is_over()
     self.lottery.claim_ended = True
-
 
 @external
 def validate_winners():
@@ -303,7 +292,6 @@ def validate_winners():
 
     if self.lottery.n_winners > 0:
         self.lottery.prize_per_winner = self.lottery.prize // self.lottery.n_winners
-
 
 @external
 def claim_prize():
