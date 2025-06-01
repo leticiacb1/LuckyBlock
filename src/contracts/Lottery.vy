@@ -71,6 +71,10 @@ lottery: public(Lottery)
 # }
 lottery_book: public(HashMap[uint256, HashMap[address, HashMap[uint256, UserTicket]]])
 
+event PrizeClaimed:
+    user: address
+    amount: uint256
+
 # --------------------------------------
 # ------------ DEPLOY ------------------
 # --------------------------------------
@@ -272,9 +276,6 @@ def validate():
         user_numbers: uint256[6] = ticket.user_chosen_numbers
         self.validate_winner(msg.sender, user_numbers)
 
-    if self.lottery.n_winners > 0:
-        self.lottery.prize_per_winner = self.lottery.prize // self.lottery.n_winners
-
 @external
 def finish_validation_time():
     self.only_owner()
@@ -285,6 +286,9 @@ def finish_validation_time():
     self.lottery.claim_start_time = block.timestamp
     self.lottery.claim_started = True
 
+    if self.lottery.n_winners > 0:
+        self.lottery.prize_per_winner = self.lottery.prize // self.lottery.n_winners
+
 @external
 def claim_prize():
     self.claim_in_progress()
@@ -293,6 +297,7 @@ def claim_prize():
         winner_address: address = self.lottery.winners_address[i]
         if winner_address == msg.sender:
             send(msg.sender, self.lottery.prize_per_winner)
+            log PrizeClaimed(msg.sender, self.lottery.prize_per_winner)
 
 @external
 def finish_claim_time():

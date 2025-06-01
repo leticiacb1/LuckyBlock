@@ -36,7 +36,6 @@ def test_validate(lottery, accounts):
     # --- Assertions ---
     assert lottery.lottery()[10][0] == user1.address         # Winner address
     assert lottery.lottery()[11]    == 1                     # n_winners == 1
-    assert lottery.lottery()[12]    == lottery.lottery()[3]  # prize_per_winner == total_prize
-
+    
     # user2 is not winner
     assert all(lottery.lottery()[10][i] != user2.address for i in range(lottery.lottery()[11]))
