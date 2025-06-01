@@ -3,7 +3,7 @@ import brownie
 from brownie import chain, reverts
 
 def test_claim_prize(lottery, accounts):
-    owner = accounts[0]
+    owner = lottery.lottery()[1]
     user1 = accounts[1]
     user2 = accounts[2]
     user3 = accounts[3]
