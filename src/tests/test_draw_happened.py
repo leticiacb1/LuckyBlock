@@ -7,12 +7,6 @@ def test_draw_happened(lottery, accounts):
     user = accounts[1]
     winner_numbers = [1, 2, 3, 4, 5, 6]
 
-    # Not contract owner
-    with pytest.raises(ValueError) as exc_info:
-        lottery.finish_bet_time({"from": user})
-    assert "Only contract owner can call this" in str(exc_info.value)
-
-    # Contract owner
     # Bet time is over
     chain.sleep(lottery.lottery()[6] - chain.time() + 1) # lottery.lottery()[6] = bet_end_time
     chain.mine()
@@ -21,6 +15,12 @@ def test_draw_happened(lottery, accounts):
     tx.wait(1)
 
     # Draw happened
+    # Not contract owner
+    with pytest.raises(ValueError) as exc_info:
+        lottery.draw_happened(winner_numbers, {"from": user})
+    assert "Only contract owner can call this" in str(exc_info.value)
+
+    # Contract owner
     ty = lottery.draw_happened(winner_numbers, {"from": owner})
     ty.wait(1)
 

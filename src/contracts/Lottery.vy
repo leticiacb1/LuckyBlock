@@ -264,24 +264,7 @@ def draw_happened(winner_numbers: uint256[6]):
     self.lottery.validation_started = True
 
 @external
-def finish_validation_time():
-    self.only_owner()
-    assert self.lottery.draw_occurred
-    self.validation_is_over()
-    self.lottery.validation_ended = True
-
-    self.lottery.claim_start_time = block.timestamp
-    self.lottery.claim_started = True
-
-@external
-def finish_claim_time():
-    self.only_owner()
-    assert self.lottery.validation_ended
-    self.claim_is_over()
-    self.lottery.claim_ended = True
-
-@external
-def validate_winners():
+def validate():
     self.validation_in_progress()
 
     count: uint256 = self.user_ticket_counter[msg.sender]
@@ -294,6 +277,16 @@ def validate_winners():
         self.lottery.prize_per_winner = self.lottery.prize // self.lottery.n_winners
 
 @external
+def finish_validation_time():
+    self.only_owner()
+    assert self.lottery.draw_occurred
+    self.validation_is_over()
+    self.lottery.validation_ended = True
+
+    self.lottery.claim_start_time = block.timestamp
+    self.lottery.claim_started = True
+
+@external
 def claim_prize():
     self.claim_in_progress()
 
@@ -301,3 +294,10 @@ def claim_prize():
         winner_address: address = self.lottery.winners_address[i]
         if winner_address == msg.sender:
             send(msg.sender, self.lottery.prize_per_winner)
+
+@external
+def finish_claim_time():
+    self.only_owner()
+    assert self.lottery.validation_ended
+    self.claim_is_over()
+    self.lottery.claim_ended = True
