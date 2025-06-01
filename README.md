@@ -29,15 +29,41 @@ The drawing takes place off-chain, using traditional methods.
 
 An oracle then sends the drawn numbers to the smart contract on the blockchain.
 
-#### 5. Winner Verification
+#### 5. Validation
 
-The smart contract compares all bets with the drawn numbers.
+Players who believe they have a winning ticket must "notify" the contract (within the stipulated time window).
 
-It identifies the users who matched the numbers and automatically calculates the prize amounts.
+When notified, a check is made to confirm whether or not the player is a winner.
 
-#### 6. Prize Distribution
+Only players who notify at this stage will be able to withdraw the prize in the future (if they are winners).
 
-Winners can claim their prizes within a defined period after the drawing results are announced.
+#### 6. Closing of Validation
+
+After the deadline, the contract automatically blocks any new validation.
+
+#### 7. Prize Distribution
+
+Players who previously completed the validation (validation phase) and were confirmed as winners by the contract may request to withdraw their prize.
+
+#### 8. End of Lottery
+
+After the lottery closes, no user will be able to request the withdrawal of the prize.
+
+### Contract Constraints
+
+1. Maximum number of tickets per player limited to 10
+
+2. Maximum number of winners per round is 1000
+
+3. Valid numbers for betting must be between 1 and 60 (inclusive)
+
+4. Currently the contract only allows winners who match 6/6 numbers
+
+5. The lottery tickets (cards) sold only allow the choice of 6 numbers, with no additional value for choosing more numbers. 5. 
+   
+   For a bet to be considered the same as a winning one, it is not enough for it to have the same number; it must have the same sequence.
+
+   For example, if the winning combination is [1, 2, 3, 4, 5, 6] and a player has a ticket with the combination [1, 2, 3, 4, 6, 5] he will not be considered a winner.
 
 
 ## ⚙️ Configuration
