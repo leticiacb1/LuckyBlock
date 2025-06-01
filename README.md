@@ -149,3 +149,8 @@ $ brownie test
 
 # The default network is defined in the brownie-config.yaml file as ganache network
 ```
+
+```bash
+# Run only one test file:
+$ brownie test tests/test_buy_ticket.py::test_buy_ticket
+```
