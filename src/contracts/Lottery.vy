@@ -305,3 +305,10 @@ def finish_claim_time():
     assert self.lottery.validation_ended
     self.claim_is_over()
     self.lottery.claim_ended = True
+
+@external
+def claim_contract_balance():
+    self.only_owner()
+    assert self.lottery.claim_ended, "Claim time is not over"
+    if self.balance > 0:
+        send(msg.sender, self.balance)
