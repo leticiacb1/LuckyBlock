@@ -49,6 +49,8 @@ Players who previously completed the validation (validation phase) and were conf
 
 After the lottery closes, no user will be able to request the withdrawal of the prize.
 
+Contract owner can withdraw the profit obtained.
+
 ### Contract Constraints
 
 1. Maximum number of tickets per player limited to 10
@@ -170,6 +172,7 @@ Brownie environment is ready.
 >>> Ctrl + D
 
 # Run tests (src/ folder)
+$ export PYTHONWARNINGS="ignore::UserWarning"
 $ brownie test
 
 # The default network is defined in the brownie-config.yaml file as ganache network
@@ -177,5 +180,6 @@ $ brownie test
 
 ```bash
 # Run only one test file:
+$ export PYTHONWARNINGS="ignore::UserWarning"
 $ brownie test tests/test_buy_ticket.py::test_buy_ticket
 ```

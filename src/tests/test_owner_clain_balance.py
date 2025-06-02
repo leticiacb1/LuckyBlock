@@ -2,9 +2,13 @@ import pytest
 import brownie
 from brownie import chain, reverts
 
-def test_onwer_clain_balance(lottery, accounts):
+def test_owner_clain_balance(lottery, accounts):
     owner = lottery.lottery()[1]
     user = accounts[1]
+
+    # --- Buy ticket ---
+    lottery.buy_ticket(1, [1,2,3,4,5,6], {"from": user, "value": 5})
+    lottery.buy_ticket(1, [1,2,3,4,5,6], {"from": user, "value": 5})
 
     # --- End Betting Phase ---
     chain.sleep(lottery.lottery()[6] - chain.time() + 1)
@@ -22,12 +26,6 @@ def test_onwer_clain_balance(lottery, accounts):
     lottery.finish_validation_time({"from": owner})
 
     # --- End Claim Phase ---
-    # Not contract owner
-    lottery.finish_claim_time({"from": user})
-
-    # Not over
-    lottery.finish_claim_time({"from": owner})
-
     claim_duration = lottery.lottery()[18]  # claim_time_duration
     chain.sleep(claim_duration + 1)
     chain.mine()
@@ -38,12 +36,17 @@ def test_onwer_clain_balance(lottery, accounts):
     assert lottery.lottery()[19] == True
 
     # --- Owner Claim Balance ---
-    initial_balance = owner.balance()
-    claim_tx = lottery.claim_balance({"from": owner})
-    claim_tx.wait(1)
-    final_balance = owner.balance()
-    chain.mine()
-    assert final_balance > initial_balance, "Owner's balance did not increase after claiming"
+
+    # Not contract owner
+    with pytest.raises(ValueError) as exc_info:
+        lottery.claim_contract_balance({"from": user})
+    assert "Only contract owner can call this" in str(exc_info.value)
+
+    # Contract owner
+    tx = lottery.claim_contract_balance({"from": owner})
+    assert "PrizeClaimed" in tx.events
+    assert tx.events["PrizeClaimed"]["user"] == owner
+    assert tx.events["PrizeClaimed"]["amount"] == 10
 
 
 

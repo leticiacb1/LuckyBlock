@@ -310,5 +310,8 @@ def finish_claim_time():
 def claim_contract_balance():
     self.only_owner()
     assert self.lottery.claim_ended, "Claim time is not over"
+
+    profit : uint256 = self.lottery.total_amount_raised - (self.lottery.prize_per_winner * self.lottery.n_winners)
     if self.balance > 0:
         send(msg.sender, self.balance)
+        log PrizeClaimed(msg.sender, profit)
