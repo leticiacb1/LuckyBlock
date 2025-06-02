@@ -1,6 +1,8 @@
 # 🍀 LuckyBlock
 <i>A Lottery on the Blockchain</i>
 
+Video : https://youtu.be/nAzwe6yF28A
+
 ## 🔍 Description
 
 It is a decentralized lottery platform built on blockchain technology, designed to eliminate the main flaws of traditional lotteries—such as lack of transparency, vulnerability to fraud, loss of physical tickets, and delays in prize distribution.

@@ -1,6 +1,7 @@
 import pytest
 import brownie
 from brownie import chain, reverts
+from web3.exceptions import ContractLogicError
 
 def test_draw_happened(lottery, accounts):
     owner = lottery.lottery()[1]
@@ -16,7 +17,7 @@ def test_draw_happened(lottery, accounts):
 
     # Draw happened
     # Not contract owner
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises((ValueError,ContractLogicError)) as exc_info:
         lottery.draw_happened(winner_numbers, {"from": user})
     assert "Only contract owner can call this" in str(exc_info.value)
 

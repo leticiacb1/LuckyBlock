@@ -1,6 +1,7 @@
 import pytest
 import brownie
 from brownie import chain, reverts
+from web3.exceptions import ContractLogicError
 
 def test_owner_clain_balance(lottery, accounts):
     owner = lottery.lottery()[1]
@@ -38,7 +39,7 @@ def test_owner_clain_balance(lottery, accounts):
     # --- Owner Claim Balance ---
 
     # Not contract owner
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises((ValueError,ContractLogicError)) as exc_info:
         lottery.claim_contract_balance({"from": user})
     assert "Only contract owner can call this" in str(exc_info.value)
 

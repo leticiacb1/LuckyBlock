@@ -19,7 +19,7 @@ def test_buy_ticket(lottery, short_lottery, max_number_tickets_lottery):
     # Bet not in progress
     chain.sleep(1)
     chain.mine()
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises((ValueError,ContractLogicError)) as exc_info:
         short_lottery.buy_ticket(correct_ticket_id, correct_chosen_numbers, {"from": user, "value": correct_ticket_price})
     assert "Betting time is over" in str(exc_info.value)
 

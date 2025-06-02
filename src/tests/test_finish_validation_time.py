@@ -2,6 +2,8 @@ import pytest
 import brownie
 from brownie import chain, reverts
 
+from web3.exceptions import ContractLogicError
+
 def test_finish_validation_time(lottery, accounts):
     owner = lottery.lottery()[1]
     user = accounts[1]
@@ -34,7 +36,7 @@ def test_finish_validation_time(lottery, accounts):
     # --- self.validation_is_over() ---
 
     # Is not over
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises((ValueError, ContractLogicError)) as exc_info:
         lottery.finish_validation_time({"from": owner})
     assert "Validate time is not over" in str(exc_info.value)
 
